@@ -3,7 +3,6 @@
   <groupId>org.miyadai.app</groupId>
   <artifactId>study-spring</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-
   <properties>
     <!-- Generic properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,6 +43,7 @@
       <artifactId>validation-api</artifactId>
       <version>${validation-api.version}</version>
     </dependency>
+    <!-- Hibernate Validator -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
