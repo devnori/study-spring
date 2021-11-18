@@ -1,47 +1,43 @@
-package org.miyadai.app.study.form;
+package org.miyadai.app.study.entity;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotBlank;
+import java.util.Date;
 
 /**
- * 品目フォーム.
+ * 品目エンティティ.
  * @author nori
  *
  */
-public class ItemForm implements Serializable {
+public class Item {
 
 	/* 品目コード. */
-	@NotBlank
-	@Size(min = 10, max = 10)
-	private String itemCode;
+	String itemCode;
 
 	/* 品目名. */
-	@NotBlank
-	@Size(min = 1, max = 256)
-	private String itemName;
+	String itemName;
 
 	/* 備考. */
-	@Size(min = 0, max = 2000)
-	private String note;
+	String note;
 
 	/* 品目種別. */
-	@NotNull
-	@Pattern(regexp = "01|02|03|04")
-	private String itemType;
+	String itemType;
 
 	/* ロット管理. */
-	@NotNull
-	@Pattern(regexp = "1|0")
-	private String lotMng;
+	String lotMng;
 
-	/* 有効フラグ */
-	@Pattern(regexp = "1|0")
-	private String validFlg;
+	/* 有効フラグ. */
+	String validFlg;
+
+	/* 登録日時. */
+	Date insDate;
+
+	/* 登録ユーザ. */
+	String insUser;
+
+	/* 更新日時. */
+	Date updDate;
+
+	/* 更新ユーザ. */
+	String updUser;
 
 	/**
 	 * 品目コードを取得します.
@@ -84,7 +80,7 @@ public class ItemForm implements Serializable {
 	}
 
 	/**
-	 * 備考設定します.
+	 * 備考を設定します.
 	 * @param note 備考
 	 */
 	public void setNote(String note) {
@@ -100,7 +96,7 @@ public class ItemForm implements Serializable {
 	}
 
 	/**
-	 * 品目種別設定します.
+	 * 品目種別を設定します.
 	 * @param itemType 品目種別
 	 */
 	public void setItemType(String itemType) {
@@ -116,7 +112,7 @@ public class ItemForm implements Serializable {
 	}
 
 	/**
-	 * ロット管理設定します.
+	 * ロット管理を設定します.
 	 * @param lotMng ロット管理
 	 */
 	public void setLotMng(String lotMng) {
@@ -132,10 +128,74 @@ public class ItemForm implements Serializable {
 	}
 
 	/**
-	 * 有効フラグ設定します.
+	 * 有効フラグを設定します.
 	 * @param validFlg 有効フラグ
 	 */
 	public void setValidFlg(String validFlg) {
 		this.validFlg = validFlg;
+	}
+
+	/**
+	 * 登録日時を取得します.
+	 * @return 登録日時
+	 */
+	public Date getInsDate() {
+		return insDate;
+	}
+
+	/**
+	 * 登録日時を設定します.
+	 * @param insDate 登録日時
+	 */
+	public void setInsDate(Date insDate) {
+		this.insDate = insDate;
+	}
+
+	/**
+	 * 登録ユーザを取得します.
+	 * @return 登録ユーザ
+	 */
+	public String getInsUser() {
+		return insUser;
+	}
+
+	/**
+	 * 登録ユーザを設定します.
+	 * @param insUser 登録ユーザ
+	 */
+	public void setInsUser(String insUser) {
+		this.insUser = insUser;
+	}
+
+	/**
+	 * 更新日時を取得します.
+	 * @return 更新日時
+	 */
+	public Date getUpdDate() {
+		return updDate;
+	}
+
+	/**
+	 * 更新日時を設定します.
+	 * @param updDate 更新日時
+	 */
+	public void setUpdDate(Date updDate) {
+		this.updDate = updDate;
+	}
+
+	/**
+	 * 更新ユーザを取得します.
+	 * @return 更新ユーザ
+	 */
+	public String getUpdUser() {
+		return updUser;
+	}
+
+	/**
+	 * 更新ユーザを設定します.
+	 * @param updUser 更新ユーザ
+	 */
+	public void setUpdUser(String updUser) {
+		this.updUser = updUser;
 	}
 }

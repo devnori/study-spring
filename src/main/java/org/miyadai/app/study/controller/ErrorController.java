@@ -11,4 +11,9 @@ public class ErrorController {
 	public String renderErrorPage() {
 		return "error";
 	}
+
+	@RequestMapping(value = "errors", method = RequestMethod.POST)
+	public String renderErrorPagePost() {
+		return "error";
+	}
 }

@@ -17,15 +17,15 @@
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" th:href="@{/}">
+                <a class="nav-link" aria-current="page" th:href="@{/}">
                   <span data-feather="home"></span>
                   ダッシュボード
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" th:href="@{/item/input}">
+                <a class="nav-link active" th:href="@{/item/}">
                   <span data-feather="package"></span>
-                  品目登録
+                  品目
                 </a>
               </li>
             </ul>
@@ -33,13 +33,13 @@
         </nav>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">品目情報登録完了</h1>
+            <h1 class="h3">品目情報登録完了</h1>
           </div>
           <div class="card mt-5">
             <div class="card-body">
               <h5 class="card-title">登録完了</h5>
               <p class="card-text">品目情報の登録が完了しました。</p>
-              <a th:href="@{/}" class="btn btn-primary">トップへ戻る</a>
+              <a th:href="@{/item/}" class="btn btn-primary">品目一覧へ戻る</a>
             </div>
           </div>
         </main>
