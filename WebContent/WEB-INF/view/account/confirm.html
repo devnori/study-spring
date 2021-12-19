@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja"
-    xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Spring学習 - ダッシュボード</title>
+    <title>Spring学習 - 品目登録 - 確認</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" media="all" th:href="@{/css/style.css}">
   </head>
@@ -20,7 +18,7 @@
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" th:href="@{/}">
+                <a class="nav-link" aria-current="page" th:href="@{/}">
                   <span data-feather="home"></span>
                   ダッシュボード
                 </a>
@@ -32,7 +30,7 @@
                 </a>
               </li>
               <li class="nav-item" sec:authorize="hasRole('ROLE_SYSTEM')">
-                <a class="nav-link" th:href="@{/system/account/}">
+                <a class="nav-link active" th:href="@{/system/account/}">
                   <span data-feather="users"></span>
                   アカウント
                 </a>
@@ -50,10 +48,36 @@
         </nav>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h3">ダッシュボード</h1>
+            <h1 class="h3">アカウント情報登録確認</h1>
             <div class="btn-group ml-auto">
             </div>
           </div>
+          <form th:action="@{/system/account/store}" th:object="${accountForm}" method="post">
+            <div class="col-md-7 col-lg-8">
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  ユーザID：<span th:text="*{userId}"></span>
+                  <input type="hidden" th:field="*{userId}">
+                </div>
+                <div class="col-sm-6">
+                  パスワード：**********
+                  <input type="hidden" th:field="*{password}">
+                </div>
+                <div class="col-sm-6">
+                  ユーザ名：<span th:text="*{userName}"></span>
+                  <input type="hidden" th:field="*{userName}">
+                </div>
+                <div class="col-sm-6">
+                  品目種別：
+                  <span th:each="accountType : ${accountTypeList}" th:if="*{accountType} == ${accountType.code}" th:text="${accountType.name}"></span>
+                  <input type="hidden" th:field="*{accountType}">
+                </div>
+              </div>
+              <hr class="my-4">
+              <button class="btn btn-primary btn-lg px-3" type="submit">登録</button>
+              <button class="btn btn-secondary btn-lg px-3" type="button" onclick="history.back()">戻る</button>
+            </div>
+          </form>
         </main>
       </div>
     </div>

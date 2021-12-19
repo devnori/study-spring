@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja"
-    xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Spring学習 - ダッシュボード</title>
+    <title>Spring学習 - アカウント一覧</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" media="all" th:href="@{/css/style.css}">
   </head>
@@ -20,7 +18,7 @@
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" th:href="@{/}">
+                <a class="nav-link" aria-current="page" th:href="@{/}">
                   <span data-feather="home"></span>
                   ダッシュボード
                 </a>
@@ -32,7 +30,7 @@
                 </a>
               </li>
               <li class="nav-item" sec:authorize="hasRole('ROLE_SYSTEM')">
-                <a class="nav-link" th:href="@{/system/account/}">
+                <a class="nav-link active" th:href="@{/system/account/}">
                   <span data-feather="users"></span>
                   アカウント
                 </a>
@@ -50,9 +48,38 @@
         </nav>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h3">ダッシュボード</h1>
+            <h1 class="h3">アカウント一覧</h1>
             <div class="btn-group ml-auto">
+              <a class="btn btn-link" th:href="@{/system/account/input}">
+                <span data-feather="user-plus"></span>
+                アカウント登録
+              </a>
             </div>
+          </div>
+          <div class="container">
+            <div th:if="!${accountList.size()}">
+              <p>アカウント情報が存在しません</p>
+            </div>
+            <table class="table table-bordered" th:if="${accountList.size()}">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">ユーザID</th>
+                  <th scope="col">パスワード</th>
+                  <th scope="col">ユーザ名</th>
+                  <th scope="col">アカウント種別</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="account, accountSt : ${accountList}">
+                  <td th:text="${accountSt.count}"></td>
+                  <td th:text="${account.userId}"></td>
+                  <td>**********</td>
+                  <td th:text="${account.userName}"></td>
+                  <td th:each="accountType : ${accountTypeList}" th:if="${account.accountType} == ${accountType.code}" th:text="${accountType.name}"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </main>
       </div>

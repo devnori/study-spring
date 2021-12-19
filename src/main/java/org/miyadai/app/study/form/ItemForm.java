@@ -84,7 +84,7 @@ public class ItemForm implements Serializable {
 	}
 
 	/**
-	 * 備考設定します.
+	 * 備考を設定します.
 	 * @param note 備考
 	 */
 	public void setNote(String note) {
@@ -100,7 +100,7 @@ public class ItemForm implements Serializable {
 	}
 
 	/**
-	 * 品目種別設定します.
+	 * 品目種別を設定します.
 	 * @param itemType 品目種別
 	 */
 	public void setItemType(String itemType) {
@@ -116,7 +116,7 @@ public class ItemForm implements Serializable {
 	}
 
 	/**
-	 * ロット管理設定します.
+	 * ロット管理を設定します.
 	 * @param lotMng ロット管理
 	 */
 	public void setLotMng(String lotMng) {
@@ -132,7 +132,7 @@ public class ItemForm implements Serializable {
 	}
 
 	/**
-	 * 有効フラグ設定します.
+	 * 有効フラグを設定します.
 	 * @param validFlg 有効フラグ
 	 */
 	public void setValidFlg(String validFlg) {

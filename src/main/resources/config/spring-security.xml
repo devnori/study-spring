@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:sec="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd">
+
+  <!-- 認証ロジッククラス -->
+  <bean id="appUserDetailsService"
+      class="org.miyadai.app.study.service.AppUserDetailsService" />
+
+  <!-- パスワードエンコーダ -->
+  <bean id="passwordEncoder"
+      class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+  <!-- SpringSecurityフィルタ除外URL設定 -->
+  <sec:http pattern="/js/**" security="none" />
+  <sec:http pattern="/css/**" security="none" />
+
+  <sec:http>
+    <!-- ログイン設定 -->
+    <sec:form-login login-page="/login"
+        default-target-url="/"
+        authentication-failure-url="/login?error=true"
+        username-parameter="userId" password-parameter="password" />
+    <!-- ログアウト設定 -->
+    <sec:logout logout-url="/logout"
+        logout-success-url="/login"
+        invalidate-session="true"
+        delete-cookies="JSESSIONID" />
+    <!-- アクセス拒否ページ設定 -->
+    <sec:access-denied-handler error-page="/accessDenied" />
+    <sec:session-management />
+    <!-- ログイン画面(認証不要) -->
+    <sec:intercept-url pattern="/login/**" access="permitAll" />
+    <!-- システム管理者のみ -->
+    <sec:intercept-url pattern="/system/**" access="hasRole('ROLE_SYSTEM')" />
+    <!-- システム管理者および管理者のみ -->
+    <sec:intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_SYSTEM','ROLE_ADMIN')" />
+    <!-- 認証済みユーザのみ -->
+    <sec:intercept-url pattern="/**" access="isAuthenticated()" />
+  </sec:http>
+
+  <!-- 認証ロジック -->
+  <sec:authentication-manager>
+    <sec:authentication-provider user-service-ref="appUserDetailsService">
+      <sec:password-encoder ref="passwordEncoder" />
+    </sec:authentication-provider>
+  </sec:authentication-manager>
+</beans>

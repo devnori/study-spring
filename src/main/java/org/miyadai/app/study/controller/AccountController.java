@@ -2,18 +2,18 @@ package org.miyadai.app.study.controller;
 
 import java.util.Date;
 
-import org.miyadai.app.study.entity.Item;
-import org.miyadai.app.study.enums.ItemType;
-import org.miyadai.app.study.form.ItemForm;
+import org.miyadai.app.study.entity.Account;
+import org.miyadai.app.study.enums.AccountType;
+import org.miyadai.app.study.form.AccountForm;
+import org.miyadai.app.study.service.AccountService;
 import org.miyadai.app.study.service.AppUserDetails;
-import org.miyadai.app.study.service.ItemService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -22,65 +22,60 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * 品目コントローラ.
+ * アカウントコントローラ.
  * @author nori
  *
  */
 @Controller
-public class ItemController {
+public class AccountController {
 
 	@Autowired
-	private ItemService itemService;
+	private AccountService accountService;
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	/**
-	 * 品目情報一覧.
+	 * アカウント情報一覧.
 	 * @param form アクションフォーム
 	 * @param model モデル
 	 * @return 入力画面HTML名
 	 */
-	@RequestMapping(value = "/item", method = RequestMethod.GET)
+	@RequestMapping(value = "/system/account", method = RequestMethod.GET)
 	public String index(Model model) {
 
 		// リスト設定
-		model.addAttribute("itemList", itemService.findAll());
-		model.addAttribute("itemTypeList", ItemType.values());
+		model.addAttribute("accountList", accountService.findAll());
+		model.addAttribute("accountTypeList", AccountType.values());
 
-		return "item/index";
+		return "account/index";
 	}
 
 	/**
-	 * 品目情報入力.
+	 * アカウント情報入力.
 	 * @param form アクションフォーム
 	 * @param model モデル
 	 * @return 入力画面HTML名
 	 */
-	@RequestMapping(value = "/item/input", method = RequestMethod.GET)
-	public String input(@ModelAttribute ItemForm form, Model model) {
-
-		// 初期値セット
-		if (StringUtils.isEmpty(form.getLotMng())){
-			form.setLotMng("1");
-		}
-		if (StringUtils.isEmpty(form.getValidFlg())){
-			form.setValidFlg("1");
-		}
+	@RequestMapping(value = "/system/account/input", method = RequestMethod.GET)
+	public String input(@ModelAttribute AccountForm form, Model model) {
 
 		// リスト設定
-		model.addAttribute("itemTypeList", ItemType.values());
+		model.addAttribute("accountTypeList", AccountType.values());
 
-		return "item/input";
+		return "account/input";
 	}
 
 	/**
-	 * 品目情報入力確認.
+	 * アカウント情報入力確認.
 	 * @param formアクションフォーム
 	 * @param result フォームバインド結果
 	 * @param model モデル
 	 * @return 入力確認画面HTML名
 	 */
-	@RequestMapping(value = "/item/confirm", method = RequestMethod.POST)
+	@RequestMapping(value = "/system/account/confirm", method = RequestMethod.POST)
 	public String confirm(
-			@ModelAttribute @Validated ItemForm form, BindingResult result, Model model) {
+			@ModelAttribute @Validated AccountForm form, BindingResult result, Model model) {
 
 		// 入力チェックエラー有無判定
 		if (result.hasErrors()) {
@@ -89,30 +84,23 @@ public class ItemController {
 		}
 
 		// リスト設定
-		model.addAttribute("itemTypeList", ItemType.values());
+		model.addAttribute("accountTypeList", AccountType.values());
 
-		// 有効フラグの値変換
-		if ("1".equals(form.getValidFlg())) {
-			form.setValidFlg("1");
-		} else {
-			form.setValidFlg("0");
-		}
-
-		return "item/confirm";
+		return "account/confirm";
 	}
 
 	/**
-	 * 品目情報登録.
+	 * アカウント情報登録.
 	 * @param userDetail 認証済みユーザ情報
 	 * @param form アクションフォーム
 	 * @param result フォームバインド結果
 	 * @param model モデル
 	 * @return 登録完了画面HTML名
 	 */
-	@RequestMapping(value = "/item/store", method = RequestMethod.POST)
+	@RequestMapping(value = "/system/account/store", method = RequestMethod.POST)
 	public String store(
 			@AuthenticationPrincipal AppUserDetails userDetail,
-			@ModelAttribute @Validated ItemForm form, BindingResult result, Model model) {
+			@ModelAttribute @Validated AccountForm form, BindingResult result, Model model) {
 
 		// 入力チェックエラー有無判定
 		if (result.hasErrors()) {
@@ -121,31 +109,27 @@ public class ItemController {
 		}
 
 		// フォームの値をエンティティにコピー
-		Item item = new Item();
-		BeanUtils.copyProperties(form, item);
+		Account account = new Account();
+		BeanUtils.copyProperties(form, account);
 
-		// 有効フラグの値変換
-		if ("1".equals(item.getValidFlg())) {
-			item.setValidFlg("1");
-		} else {
-			item.setValidFlg("0");
-		}
+		// エンコードしたパスワードをセット
+		account.setPassword(passwordEncoder.encode(form.getPassword()));
 
 		// 共通項目をセット
 		Date now = new Date();
-		item.setInsDate(now);
-		item.setInsUser(userDetail.getAccount().getUserId());
-		item.setUpdDate(now);
-		item.setUpdUser(userDetail.getAccount().getUserId());
+		account.setInsDate(now);
+		account.setInsUser(userDetail.getAccount().getUserId());
+		account.setUpdDate(now);
+		account.setUpdUser(userDetail.getAccount().getUserId());
 
 		try {
 			// DBへデータを保存
-			itemService.save(item);
+			accountService.save(account);
 		} catch (DuplicateKeyException dke) {
-			result.addError(new FieldError(result.getObjectName(), "itemCode", "入力した品目は既に登録されています。"));
+			result.addError(new FieldError(result.getObjectName(), "userId", "入力したアカウントは既に登録されています。"));
 			return input(form, model);
 		}
 
-		return "item/complete";
+		return "account/complete";
 	}
 }

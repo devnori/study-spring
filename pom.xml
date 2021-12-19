@@ -15,9 +15,10 @@
     <!-- Bean Validation API version -->
     <validation-api.version>2.0.1.Final</validation-api.version>
     <!-- Hibernate Validator version -->
-    <hibernate-validator.version>5.3.4.Final</hibernate-validator.version>
+    <hibernate-validator.version>5.3.6.Final</hibernate-validator.version>
     <!-- Thymeleaf -->
     <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+    <thymeleaf.extras.version>3.0.4.RELEASE</thymeleaf.extras.version>
     <!-- PostgreSQL version -->
     <postgresql.version>9.4-1206-jdbc42</postgresql.version>
     <!-- Commons DBCP2 version -->
@@ -58,6 +59,17 @@
         <artifactId>spring-aspects</artifactId>
         <version>${spring-framework.version}</version>
     </dependency>
+    <!-- Spring Security -->
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring-framework.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>${spring-framework.version}</version>
+    </dependency>
     <!-- Bean Validation API -->
     <dependency>
       <groupId>javax.validation</groupId>
@@ -80,6 +92,11 @@
       <groupId>org.thymeleaf</groupId>
       <artifactId>thymeleaf-spring5</artifactId>
       <version>${thymeleaf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.thymeleaf.extras</groupId>
+      <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+      <version>${thymeleaf.extras.version}</version>
     </dependency>
     <!-- PostgreSQL -->
     <dependency>

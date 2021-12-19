@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class TopController {
+public class LoginController {
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView top(ModelAndView model) {
-		model.setViewName("top");
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView login(ModelAndView model) {
+		model.setViewName("login");
 		return model;
 	}
 }

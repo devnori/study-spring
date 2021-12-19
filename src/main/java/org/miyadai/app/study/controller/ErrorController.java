@@ -16,4 +16,14 @@ public class ErrorController {
 	public String renderErrorPagePost() {
 		return "error";
 	}
+
+	@RequestMapping(value = "accessDenied", method = RequestMethod.GET)
+	public String renderAccessDeniedPage() {
+		return "accessDenied";
+	}
+
+	@RequestMapping(value = "accessDenied", method = RequestMethod.POST)
+	public String renderAccessDeniedPagePost() {
+		return "accessDenied";
+	}
 }

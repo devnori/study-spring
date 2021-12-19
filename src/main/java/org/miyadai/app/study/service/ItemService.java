@@ -22,15 +22,12 @@ public class ItemService {
 		return itemMapper.findAll();
 	}
 
-	public Item findAll(String itemCode) {
+	public Item findOne(String itemCode) {
 		return itemMapper.findOne(itemCode);
 	}
 
 	public void save(Item item) {
 		itemMapper.save(item);
-		if ("0".equals(item.getValidFlg())) {
-			throw new RuntimeException();
-		}
 	}
 
 	public void update(Item item) {
